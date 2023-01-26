@@ -5,7 +5,7 @@ import Spinner from "react-native-loading-spinner-overlay"
 import { Dimensions } from "react-native";
 import { BackHandler } from "react-native";
 
-export const Page13 = ({setPostFeelings, setPage, setProg, data, resetState}) => {
+export const Page13 = ({setPostFeelings, setPage, setProg, data, saveToFirestore, resetState}) => {
     const [VASValue, setVASValue] = useState(data.postFeelings)
     const [VASValueError, setVASValueError] = useState("");
 
@@ -39,17 +39,25 @@ export const Page13 = ({setPostFeelings, setPage, setProg, data, resetState}) =>
         }
     }
     const [showDialog, setShowDialog] = useState(false);
-    const handleNext = () => {
-        setPostFeelings(VASValue);
-        console.log(data);
-        setIsPostingToCloud(true);
-        setProg(13);
-        
-        // simulate post call
-        setTimeout(()=>{
+    const handleNext = async () => {
+        try {
+            setPostFeelings(VASValue);
+            console.log(data);
+    
+            setIsPostingToCloud(true); // show overlay spinner
+            setProg(13); // set progress to 100%
+            const id = await saveToFirestore(); // wait for data to be saved
+            setIsDataSaved(true);
+            setShowDialog(true);  // show message
+            setIsPostingToCloud(false); // hide spinner
+            //setPage(1);
+        } catch(e) {
+            console.log(e);
+            setProg(12);
+            setIsDataSaved(false);
             setShowDialog(true);
-        }, 5000)
-
+            setIsPostingToCloud(false);
+        }
     }
     const handleYes = () => {
         setShowDialog(false);
