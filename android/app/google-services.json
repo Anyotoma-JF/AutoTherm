@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "80505584396",
+    "project_id": "autotherm-a6167",
+    "storage_bucket": "autotherm-a6167.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80505584396:android:3a91eb950bd955fb26e729",
+        "android_client_info": {
+          "package_name": "com.bigbang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80505584396-tfqaqntr4tfi68qfkjdnofaae29bt6i5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIEF6n6wm4sUun6RJK3wujk34IWB3o6cU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80505584396-tfqaqntr4tfi68qfkjdnofaae29bt6i5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
