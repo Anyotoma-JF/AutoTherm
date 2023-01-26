@@ -1,4 +1,4 @@
-import { Center, Input, NativeBaseProvider, TextArea, Box, Progress } from "native-base";
+import { Center, Input, NativeBaseProvider, TextArea, Box, Progress, SearchIcon } from "native-base";
 import { useEffect, useState } from "react";
 import { Text } from "react-native-svg";
 import { Home } from "./components/Home";
@@ -18,7 +18,11 @@ import { Page11 } from "./components/Page11";
 import { Page12 } from "./components/Page12";
 import { Page13 } from "./components/Page13";
 
+import firestore from "@react-native-firebase/firestore";
+
 const App = () => {
+  const autoTherm = firestore().collection('patient_data')
+
   const [page, setPage] = useState(1);
 
   const [temp, setTemp] = useState(null);
@@ -47,6 +51,7 @@ const App = () => {
   }, [counter])
 
   useEffect(()=>{
+    console.log("Hello wold!")
     BluetoothSerial.requestEnable()
     .then(res => {
       console.log(res)
@@ -60,7 +65,9 @@ const App = () => {
       // const cnt = await BluetoothSerial.write("hi");
       // console.log(cnt);
     }
-    discoverDevices()
+    discoverDevices();
+    // autoThermRef.add(data)
+    // .then(res=>console.log(res))
   }, [])
 
   const [prog, setProg] = useState(0);
@@ -120,6 +127,29 @@ const App = () => {
     console.log(sendDuration);
   }
 
+  const saveToFirestore = async () => {
+    try {
+      const save = await autoTherm
+                                  .add({
+                                    id: patientID,
+                                    name: patientName,
+                                    gender: patientGender,
+                                    age: patientAge,
+                                    disease_or_problem: patientDOP,
+                                    face_pain_avg: patientVASValue,
+                                    face_pain_min: patientMinVASValue,
+                                    face_pain_max: patientMaxVASValue,
+                                    suffering_duration: patientSufferingDuration,
+                                    temperature: temperature,
+                                    duration: duration,
+                                    post_face_pain: postFeelings 
+                                  });
+      console.log(save.id);
+      return save.id;
+    } catch(e) {
+      return undefined;
+    }
+  } 
 
   return (
     <NativeBaseProvider>
@@ -165,7 +195,7 @@ const App = () => {
           page == 12 && <Page12 setPage={setPage} setProg={setProg} data={data}/>
         }
         {
-          page == 13 && <Page13 setPostFeelings={setPostFeelings} setPage={setPage} setProg={setProg} data={data} resetState={resetState}/>
+          page == 13 && <Page13 setPostFeelings={setPostFeelings} setPage={setPage} setProg={setProg} data={data} saveToFirestore={saveToFirestore} resetState={resetState}/>
         }
       </Center>
       <Center w="100%">
