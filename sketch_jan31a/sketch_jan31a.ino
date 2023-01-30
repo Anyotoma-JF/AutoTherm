@@ -3,7 +3,7 @@ int bluePin = 10; // Blue LED, connected to digital pin 11
 int redPin = 11; // Red LED, connected to digital pin 9
 
 int heatRelay = 8; // heating coil relay is connected to digital pin 8
-
+int val=0;
 
 // Include the libraries we need
 #include <OneWire.h>
@@ -23,8 +23,8 @@ DallasTemperature sensors(&oneWire);
  * The setup function. We only start the sensors here
  */
  #include <SoftwareSerial.h>
- int bluetoothTx = 6;
- int bluetoothRx = 7;
+ int bluetoothTx = 0;
+ int bluetoothRx = 1;
  SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
 
 void setup(void)
@@ -47,8 +47,9 @@ void setup(void)
  */
 void loop(void)
 { 
-  if (bluetooth.available()>=0){
-  unsigned int val = bluetooth.read();
+  if (bluetooth.available()>=2){
+    Serial.println("Bluetooth Connected");
+  val = bluetooth.read();
 }
   // call sensors.requestTemperatures() to issue a global temperature 
   // request to all devices on the bus
