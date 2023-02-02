@@ -1,0 +1,1 @@
+[Releases](https://github.com/Anyotoma-JF/AutoTherm/releases)
