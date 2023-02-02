@@ -19,6 +19,7 @@ import { Page12 } from "./components/Page12";
 import { Page13 } from "./components/Page13";
 
 import firestore from "@react-native-firebase/firestore";
+import { ToastAndroid } from "react-native";
 
 const App = () => {
   const autoTherm = firestore().collection('patient_data')
@@ -50,20 +51,38 @@ const App = () => {
     }
   }, [counter])
 
+  const [devices, setDevices] = useState([])
   useEffect(()=>{
     console.log("Hello wold!")
     BluetoothSerial.requestEnable()
     .then(res => {
       console.log(res)
+      // BluetoothSerial.connect("60:A4:D0:46:50:32")
+      // .then(res => {
+      //   console.log(res)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+      const discoverDevices = async () => {
+        // const unpaired = await BluetoothSerial.discoverUnpairedDevices();
+        // console.log(unpaired);
+        const devices = await BluetoothSerial.discoverUnpairedDevices();
+        setDevices(devices);
+        console.log(devices);
+        // const cnt = await BluetoothSerial.write("hi");
+        // console.log(cnt);
+      }
+      // discoverDevices();
     })
     .catch(err => {
       console.log(err)
     })
     const discoverDevices = async () => {
       const devices = await BluetoothSerial.list();
-      console.log(devices)
-      // const cnt = await BluetoothSerial.write("hi");
-      // console.log(cnt);
+      setDevices(devices);
+    //   console.log(devices)
+    //   // const cnt = await BluetoothSerial.write("hi");
+    //   // console.log(cnt);
     }
     discoverDevices();
     // autoThermRef.add(data)
@@ -118,6 +137,30 @@ const App = () => {
 
     setPage(1);
     setProg(0);
+  }
+
+  const scanDevices = async () => {
+    console.log("SD")
+    const isConnected = await BluetoothSerial.isConnected();
+    console.log(isConnected);
+    const devices = await BluetoothSerial.discoverUnpairedDevices();
+    const alreadyPaired = await BluetoothSerial.list();
+    console.log(devices)
+    setDevices([...devices, ...alreadyPaired]);
+  }
+
+  useEffect(()=>{
+    console.log(devices)
+  }, [devices])
+
+  const connectToHC06 = async (device) => {
+    try {
+      const dev = await BluetoothSerial.connect(device)
+      console.log(`U: ${dev}`);
+      ToastAndroid.show(dev.message, ToastAndroid.SHORT)
+    } catch(err) {
+      throw err;
+    }
   }
 
   const sendToHC06 = async () => {
@@ -189,7 +232,7 @@ const App = () => {
           page == 10 && <Page10 setTemperature={setTemperature} setPage={setPage} setProg={setProg} data={data}/>
         }
         {
-          page == 11 && <Page11 setDuration={setDuration} setPage={setPage} setProg={setProg} data={data} sendToHC06={sendToHC06}/>
+          page == 11 && <Page11 setDuration={setDuration} setPage={setPage} setProg={setProg} data={data} devices={devices} scanDevices={scanDevices} connectToHC06={connectToHC06} sendToHC06={sendToHC06}/>
         }
         {
           page == 12 && <Page12 setPage={setPage} setProg={setProg} data={data}/>
