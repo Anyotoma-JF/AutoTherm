@@ -133,6 +133,7 @@ const App = () => {
     setPatientMaxVASValue(undefined); // undefined
     setPatientSufferingDuration("");
     setTemperature("");
+    setDuration("");
     setPostFeelings(0);
 
     setPage(1);
@@ -163,11 +164,11 @@ const App = () => {
     }
   }
 
-  const sendToHC06 = async () => {
-    const sendTemp = await BluetoothSerial.write(temperature.toString());
-    const sendDuration = await BluetoothSerial.write(duration.toString());
-    console.log(sendTemp);
-    console.log(sendDuration);
+  const sendToHC06 = async (t, d) => {
+    const data = `${t.toString()},${d.toString()}`
+    console.log(data);
+    const sendData = await BluetoothSerial.write(data);
+    console.log(sendData);
   }
 
   const saveToFirestore = async () => {
@@ -201,9 +202,9 @@ const App = () => {
         {/* {
           page === 0 && <Home setTemp={setTemp} setDuration={setDuration} handleStart={handleStart} data={data}/>
         } */}
-        {
+        {/* {
           page === 1 && <Page1 setPatientName={setPatientName} setPage={setPage} setProg={setProg} data={data}/>
-        }
+        } */}
         {
           page == 2 && <Page2 setPatientID={setPatientID} setPage={setPage} setProg={setProg} data={data}/>
         }
@@ -229,7 +230,7 @@ const App = () => {
           page == 9 && <Page9 setPatientSufferingDuration={setPatientSufferingDuration} setPage={setPage} setProg={setProg} data={data}/>
         }
         {
-          page == 10 && <Page10 setTemperature={setTemperature} setPage={setPage} setProg={setProg} data={data}/>
+          page == 1 && <Page10 setTemperature={setTemperature} setPage={setPage} setProg={setProg} data={data}/>
         }
         {
           page == 11 && <Page11 setDuration={setDuration} setPage={setPage} setProg={setProg} data={data} devices={devices} scanDevices={scanDevices} connectToHC06={connectToHC06} sendToHC06={sendToHC06}/>

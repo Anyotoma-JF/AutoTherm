@@ -35,11 +35,12 @@ export const Page11 = ({setDuration, setPage, setProg, data, devices, scanDevice
                 return;
             }
             let _duration = parseInt(duration);
+            console.log(`_duration: ${_duration}`);
             if (unit === "s") _duration = _duration/60;
-            setDuration(_duration);
-            console.log(duration);
+            await setDuration(_duration);
+            console.log(`duration: ${duration}`);
             await connectToHC06(selectedDevice);
-            await sendToHC06();
+            await sendToHC06(data.temperature, duration);
             setPage(12);
             setProg(11);
             // setTimeout(async ()=>{
