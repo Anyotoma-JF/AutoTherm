@@ -33,7 +33,6 @@ export const Page5 = ({setPatientDOP, setPage, setProg, data}) => {
                         <Select.Item label="Stroke" value="stroke"/>
                         <Select.Item label="Muscle Spasm" value="musle_spasm"/>
                         <Select.Item label="Arthritis" value="arthritis"/>
-                        <Select.Item label="Arthritis" value="arthritis"/>
                         <Select.Item label="Osteoporesis" value="osteoporesis"/>
                         <Select.Item label="Rheumatoid" value="rheumatoid" />
                         <Select.Item label="Sclerosis" value="sclerosis" />
