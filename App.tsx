@@ -1,22 +1,22 @@
 import { Center, Input, NativeBaseProvider, TextArea, Box, Progress, SearchIcon } from "native-base";
 import { useEffect, useState } from "react";
 import { Text } from "react-native-svg";
-import { Home } from "./components/Home";
-import { Page1 } from "./components/Page1";
+import { Home } from "./src/components/Home";
+import { Page1 } from "./src/components/Page1";
 
 import BluetoothSerial from "react-native-bluetooth-serial";
-import { Page2 } from "./components/Page2";
-import { Page3 } from "./components/Page3";
-import { Page4 } from "./components/Page4";
-import { Page5 } from "./components/Page5";
-import { Page6 } from "./components/Page6";
-import { Page7 } from "./components/Page7";
-import { Page8 } from "./components/Page8";
-import { Page9 } from "./components/Page9";
-import { Page10 } from "./components/Page10";
-import { Page11 } from "./components/Page11";
-import { Page12 } from "./components/Page12";
-import { Page13 } from "./components/Page13";
+import { Page2 } from "./src/components/Page2";
+import { Page3 } from "./src/components/Page3";
+import { Page4 } from "./src/components/Page4";
+import { Page5 } from "./src/components/Page5";
+import { Page6 } from "./src/components/Page6";
+import { Page7 } from "./src/components/Page7";
+import { Page8 } from "./src/components/Page8";
+import { Page9 } from "./src/components/Page9";
+import { Page10 } from "./src/components/Page10";
+import { Page11 } from "./src/components/Page11";
+import { Page12 } from "./src/components/Page12";
+import { Page13 } from "./src/components/Page13";
 
 import firestore from "@react-native-firebase/firestore";
 import { ToastAndroid } from "react-native";
