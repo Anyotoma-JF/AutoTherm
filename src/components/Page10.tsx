@@ -1,8 +1,13 @@
 import {ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, Icon, Input, PresenceTransition, Progress, Text, VStack } from "native-base";
 import { useState } from "react";
 import FAIcon from "react-native-vector-icons/FontAwesome5"
-export const Page10 = ({setTemperature, setPage, setProg, data}) => {
-    const [temperature, _setTemperature] = useState(data.temperature)
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentTemperature } from "../redux/actions/setCurrentTemperature";
+import { setPage } from "../redux/actions/setPage";
+import { setProg } from "../redux/actions/setProg";
+import { setTherapyTemperature } from "../redux/actions/setTherapyTemperature";
+export const Page10 = () => {
+    const [temperature, _setTemperature] = useState(useSelector(store => store.therapy.temperature))
     const [temperatureError, setTemperatureError] = useState("");
     const handleTemperature = (text) => {
         if (text.length == 0) { 
@@ -12,18 +17,20 @@ export const Page10 = ({setTemperature, setPage, setProg, data}) => {
             _setTemperature(text);
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
         if (temperature.length == 0) {
             setTemperatureError("Please enter some numeric value")
             return;
         }
-        setTemperature(temperature);
-        setPage(11);
-        setProg(10);
+        dispatch(setTherapyTemperature(temperature));
+        dispatch(setCurrentTemperature(temperature));
+        dispatch(setPage(11));
+        dispatch(setProg(10));
     }
     const handleBack = () => {
-        setPage(9);
-        setProg(8);
+        dispatch(setPage(9));
+        dispatch(setProg(8));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">

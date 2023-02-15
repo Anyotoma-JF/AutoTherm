@@ -2,25 +2,30 @@ import {ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormCon
 import { useState } from "react";
 import { Dimensions } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page9 = ({setPatientSufferingDuration, setPage, setProg, data}) => {
-    const [sufferingDuration, setSufferingDuration] = useState(data.patientSufferingDuration)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientSufferingDuration } from "../redux/actions/setPatientSufferingDuration";
+import { setProg } from "../redux/actions/setProg";
+export const Page9 = () => {
+    const [sufferingDuration, setSufferingDuration] = useState(useSelector(store => store.patient.sufferingDuration))
     const [sufferingDurationError, setSufferingDurationError] = useState("");
+    const dispatch = useDispatch();
     const handleNext = () => {
         if (sufferingDuration.length == 0) {
             setSufferingDurationError("Make a selection")
             return;
         }
-        setPatientSufferingDuration(sufferingDuration);
-        setPage(10);
-        setProg(9);
+        dispatch(setPatientSufferingDuration(sufferingDuration));
+        dispatch(setPage(10));
+        dispatch(setProg(9));
     }
     const onSelectSufferingDuration = (text) => {
         setSufferingDuration(text);
         setSufferingDurationError("");
     }
     const handleBack = () => {
-        setPage(8);
-        setProg(7);
+        dispatch(setPage(8));
+        dispatch(setProg(7));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">

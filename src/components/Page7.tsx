@@ -2,8 +2,14 @@ import {ArrowBackIcon, ArrowForwardIcon, Badge, Box, Button, Center, CheckIcon, 
 import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page7 = ({setPatientMinVASValue, setPage, setProg, data}) => {
-    const [VASValue, setVASValue] = useState(data.patientMinVASValue)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientVASValueMin } from "../redux/actions/setPatientVASVAlueMin";
+import { setProg } from "../redux/actions/setProg";
+export const Page7 = () => {
+    const presetVASValue = useSelector(store => store.patient.VASValueMin);
+
+    const [VASValue, setVASValue] = useState(presetVASValue)
     const [VASValueError, setVASValueError] = useState("");
 
     const [color, setColor] = useState("primary");
@@ -32,15 +38,20 @@ export const Page7 = ({setPatientMinVASValue, setPage, setProg, data}) => {
             setPainText("Severe");
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
-        setPatientMinVASValue(VASValue);
-        setPage(8);
-        setProg(7);
+        dispatch(setPatientVASValueMin(VASValue));
+        dispatch(setPage(8));
+        dispatch(setProg(7));
     }
     const handleBack = () => {
-        setPage(6);
-        setProg(5);
+        dispatch(setPage(6));
+        dispatch(setProg(5));
     }
+    // back
+    useEffect(()=>{
+        handleVASValue(presetVASValue);
+    }, [presetVASValue])
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
             <Text fontSize="2xl">Face Pain Scale</Text>

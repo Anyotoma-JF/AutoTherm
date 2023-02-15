@@ -2,8 +2,13 @@ import {ArrowBackIcon, ArrowForwardIcon, Badge, Box, Button, Center, CheckIcon, 
 import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page8 = ({setPatientMaxVASValue, setPage, setProg, data}) => {
-    const [VASValue, setVASValue] = useState(data.patientMaxVASValue)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientVASValueMax } from "../redux/actions/setPatientVASVAlueMax";
+import { setProg } from "../redux/actions/setProg";
+export const Page8 = () => {
+    const presetVASValue = useSelector(store => store.patient.VASValueMax);
+    const [VASValue, setVASValue] = useState(presetVASValue)
     const [VASValueError, setVASValueError] = useState("");
 
     const [color, setColor] = useState("primary");
@@ -32,25 +37,21 @@ export const Page8 = ({setPatientMaxVASValue, setPage, setProg, data}) => {
             setPainText("Severe");
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
-        setPatientMaxVASValue(VASValue);
-        setPage(9);
-        setProg(8);
+        dispatch(setPatientVASValueMax(VASValue));
+        dispatch(setPage(9));
+        dispatch(setProg(8));
     }
     const handleBack = () => {
-        setPage(7);
-        setProg(6);
+        dispatch(setPage(7));
+        dispatch(setProg(6));
     }
 
-    const [predictedMaxVASValue, setPredictedMaxVASValue] = useState();
-    // pre evaluate max=2*avg-min
+    // back
     useEffect(()=>{
-        // only set when max value was not defined
-        if (data.patientMaxVASValue == undefined) {
-            const _predictedMaxVASValue = 2*data.patientVASValue - data.patientMinVASValue
-            setPredictedMaxVASValue(_predictedMaxVASValue);
-        } 
-    }, []);
+        handleVASValue(presetVASValue);
+    }, [presetVASValue])
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
             <Text fontSize="2xl">Face Pain Scale</Text>

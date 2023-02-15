@@ -1,25 +1,30 @@
 import {ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, Icon, Input, PresenceTransition, Progress, Select, Text, VStack } from "native-base";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page5 = ({setPatientDOP, setPage, setProg, data}) => {
-    const [DOP, setDOP] = useState(data.patientDOP)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientDOP } from "../redux/actions/setPatientDOP";
+import { setProg } from "../redux/actions/setProg";
+export const Page5 = () => {
+    const [DOP, setDOP] = useState(useSelector(store => store.patient.dop));
     const [DOPError, setDOPError] = useState("");
+    const dispatch = useDispatch();
     const handleNext = () => {
         if (DOP.length == 0) {
             setDOPError("Make a selection")
             return;
         }
-        setPatientDOP(DOP);
-        setPage(6);
-        setProg(5);
+        dispatch(setPatientDOP(DOP));
+        dispatch(setPage(6));
+        dispatch(setProg(5));
     }
     const onSelectDOP = (text) => {
         setDOP(text);
         setDOPError("");
     }
     const handleBack = () => {
-        setPage(4);
-        setProg(3);
+        dispatch(setPage(4));
+        dispatch(setProg(3));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">

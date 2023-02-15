@@ -1,8 +1,12 @@
 import {ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, maleIcon, Input, PresenceTransition, Progress, Text, VStack, ArrowBackIcon } from "native-base";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page4 = ({setPatientAge, setPage, setProg, data}) => {
-    const [age, setAge] = useState(data.patientAge)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientAge } from "../redux/actions/setPatientAge";
+import { setProg } from "../redux/actions/setProg";
+export const Page4 = () => {
+    const [age, setAge] = useState(useSelector(store => store.patient.age))
     const [ageError, setAgeError] = useState("");
     const handlePatientAge = (text) => {
         if (text.length == 0) { 
@@ -13,6 +17,7 @@ export const Page4 = ({setPatientAge, setPage, setProg, data}) => {
             setAge(text);
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
         if (age.length == 0) {
             setAgeError("Please enter age first")
@@ -26,13 +31,13 @@ export const Page4 = ({setPatientAge, setPage, setProg, data}) => {
             setAgeError("Please enter a numeric value")
             return;
         }
-        setPatientAge(age);
-        setPage(5);
-        setProg(4);
+        dispatch(setPatientAge(age));
+        dispatch(setPage(5));
+        dispatch(setProg(4));
     }
     const handleBack = () => {
-        setPage(3);
-        setProg(2);
+        dispatch(setPage(3));
+        dispatch(setProg(2));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">

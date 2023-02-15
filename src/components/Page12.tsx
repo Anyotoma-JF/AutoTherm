@@ -1,16 +1,28 @@
-import {Alert, ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, Icon, Input, PresenceTransition, Progress, Text, VStack } from "native-base";
+import {Alert, ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, HStack, Icon, Input, PresenceTransition, Progress, Text, VStack } from "native-base";
 import CountDown from "react-native-countdown-component"
 import {CountdownCircleTimer} from "react-native-countdown-circle-timer";
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setProg } from "../redux/actions/setProg";
+import FAIcon from "react-native-vector-icons/FontAwesome5"
 
-export const Page12 = ({setPage, setProg, data}) => {
+export const Page12 = () => {
+    const duration = useSelector(store => store.therapy.duration)
+    const dispatch = useDispatch();
+
     const handlePostTask = () => {
-        setPage(13);
-        setProg(12);
+        dispatch(setPage(13));
+        dispatch(setProg(12));
     }
+    const currentTemperature = useSelector(state => state.therapy.currentTemperature)
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
             <PresenceTransition visible initial={{opacity: 0}} animate={{opacity: 1, transition: {duration: 250}}}>
             <Center>
+                <HStack>
+                <Icon as={<FAIcon name="temperature-high"/>} size="8" mr="2"/>
+                <Text fontSize="2xl" color="gray.500">Temperature: {currentTemperature}</Text>
+                </HStack>
                 <Text fontSize="3xl" color="gray.300">Heating is ongoing</Text>
             </Center>
             {/* <CountDown
@@ -23,7 +35,7 @@ export const Page12 = ({setPage, setProg, data}) => {
             <Center>
                 <CountdownCircleTimer
                         isPlaying={true}
-                        duration={data.duration*60}
+                        duration={duration*60}
                         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                         colorsTime={[10, 6, 3, 0]}
                         onComplete={handlePostTask}
@@ -34,7 +46,7 @@ export const Page12 = ({setPage, setProg, data}) => {
                         {remainingTime}
                         </Text>
                         )}
-                    </CountdownCircleTimer>
+                </CountdownCircleTimer>
             </Center>
             </PresenceTransition>
             <FormControl pt={2}>

@@ -1,9 +1,15 @@
 import {ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, Icon, Input, PresenceTransition, Progress, Text, VStack } from "native-base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page1 = ({setPatientName, setPage, setProg, data}) => {
-    const [name, setName] = useState(data.patientName)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientName } from "../redux/actions/setPatientName";
+import { setProg } from "../redux/actions/setProg";
+import { SET_PATIENT_NAME } from "../redux/actions/types";
+export const Page1 = () => {
+    const [name, setName] = useState(useSelector(store => store.patient.name))
     const [nameError, setNameError] = useState("");
+
     const handlePatientName = (text) => {
         if (text.length == 0) { 
             setNameError("Name is required")
@@ -12,14 +18,15 @@ export const Page1 = ({setPatientName, setPage, setProg, data}) => {
             setName(text);
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
         if (name.length == 0) {
             setNameError("Please enter a name first")
             return;
         }
-        setPatientName(name);
-        setPage(2);
-        setProg(1);
+        dispatch(setPatientName(name));
+        dispatch(setPage(2));
+        dispatch(setProg(1));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
@@ -36,9 +43,10 @@ export const Page1 = ({setPatientName, setPage, setProg, data}) => {
                 </FormControl>
             </PresenceTransition>
             <FormControl pt={2}>
-            <Button 
+            <Button
+                    size="lg"
+                    variant="ghost"
                     rightIcon={<ArrowForwardIcon />} 
-                    colorScheme="primary" 
                     isDisabled={nameError.length > 0}
                     onPress={handleNext}
                     >Next</Button>

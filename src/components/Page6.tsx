@@ -1,9 +1,13 @@
-import {ArrowBackIcon, Image, ArrowForwardIcon, Badge, Box, Button, Center, CheckIcon, FormControl, HStack, Icon, Input, PresenceTransition, Progress, Slider, Text, VStack } from "native-base";
+import { ArrowBackIcon, Image, ArrowForwardIcon, Badge, Box, Button, Center, CheckIcon, FormControl, HStack, Icon, Input, PresenceTransition, Progress, Slider, Text, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
-    const [VASValue, setVASValue] = useState(data.patientVASValue)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientVASValueAVG } from "../redux/actions/setPatientVASValueAVG";
+import { setProg } from "../redux/actions/setProg";
+export const Page6 = () => {
+    const presetVASValue = useSelector(store => store.patient.VASValueAVG);
+    const [VASValue, setVASValue] = useState(presetVASValue);
     const [VASValueError, setVASValueError] = useState("");
 
     const [color, setColor] = useState("primary");
@@ -19,11 +23,11 @@ export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
             setPainText("No pain")
         }
         else if (pain >= 1 && pain <= 3) {
-            setColor("emerald"); setPainTextColor("success"); 
+            setColor("emerald"); setPainTextColor("success");
             setPainText("Mild");
         }
         else if (pain >= 4 && pain <= 6) {
-            setColor("indigo"); setPainTextColor("warning"); 
+            setColor("indigo"); setPainTextColor("warning");
             setPainText("Moderate");
         }
         else {
@@ -32,25 +36,26 @@ export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
             setPainText("Severe");
         }
     }
+    const dispatch = useDispatch();
     const handleNext = () => {
-        setPatientVASValue(VASValue);
-        setPage(7);
-        setProg(6);
+        dispatch(setPatientVASValueAVG(VASValue));
+        dispatch(setPage(7));
+        dispatch(setProg(6));
     }
     const handleBack = () => {
-        setPage(5);
-        setProg(4);
+        dispatch(setPage(5));
+        dispatch(setProg(4));
     }
     // for back 
-    useEffect(()=>{
-        handleVASValue(data.patientVASValue);
-    }, [])
+    useEffect(() => {
+        handleVASValue(presetVASValue);
+    }, [presetVASValue])
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
             <Text fontSize="2xl">Face Pain Scale</Text>
-            <PresenceTransition visible initial={{opacity: 0}} animate={{opacity: 1, transition: {duration: 250}}}>
+            <PresenceTransition visible initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
                 <FormControl isRequired isInvalid={VASValueError.length > 0}>
-                    <FormControl.Label _text={{bold: true}}>
+                    <FormControl.Label _text={{ bold: true }}>
                         What is your typical or average pain?
                     </FormControl.Label>
                     <HStack>
@@ -59,9 +64,9 @@ export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
                     </HStack>
                     <Slider colorScheme={painTextColor} size="lg" defaultValue={VASValue} minValue={0} maxValue={10} step={1} onChange={handleVASValue}>
                         <Slider.Track>
-                            <Slider.FilledTrack/>
+                            <Slider.FilledTrack />
                         </Slider.Track>
-                        <Slider.Thumb/>
+                        <Slider.Thumb />
                     </Slider>
                     <Center>
                         <Text mt={5}>
@@ -72,7 +77,7 @@ export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
                             {VASValue >= 4 && VASValue <= 6 && "Moderate Pain"}
                             {VASValue >= 7 && VASValue <= 10 && "Severe Pain"}
                         </Text> */}
-                        <Badge mt={5} colorScheme={painTextColor} variant="outline" _text={{fontSize: 25}}>
+                        <Badge mt={5} colorScheme={painTextColor} variant="outline" _text={{ fontSize: 25 }}>
                             {painText}
                         </Badge>
                     </Center>
@@ -85,20 +90,20 @@ export const Page6 = ({setPatientVASValue, setPage, setProg, data}) => {
                 </FormControl>
             </PresenceTransition>
             <FormControl pt={2}>
-            <Button.Group>
-                <Button 
-                    leftIcon={<ArrowBackIcon />} 
-                    colorScheme="primary" 
-                    onPress={handleBack}
+                <Button.Group>
+                    <Button
+                        leftIcon={<ArrowBackIcon />}
+                        colorScheme="primary"
+                        onPress={handleBack}
                     >Back</Button>
-                <Button 
-                    ml="auto"
-                    rightIcon={<ArrowForwardIcon />} 
-                    colorScheme="primary" 
-                    isDisabled={VASValueError.length > 0}
-                    onPress={handleNext}
+                    <Button
+                        ml="auto"
+                        rightIcon={<ArrowForwardIcon />}
+                        colorScheme="primary"
+                        isDisabled={VASValueError.length > 0}
+                        onPress={handleNext}
                     >Next</Button>
-            </Button.Group>
+                </Button.Group>
             </FormControl>
         </VStack>
     )

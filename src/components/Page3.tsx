@@ -1,25 +1,30 @@
 import {ArrowBackIcon, ArrowForwardIcon, Box, Button, Center, CheckIcon, FormControl, Icon, Input, PresenceTransition, Progress, Select, Text, VStack } from "native-base";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-export const Page3 = ({setPatientGender, setPage, setProg, data}) => {
-    const [gender, setGender] = useState(data.patientGender)
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/actions/setPage";
+import { setPatientGender } from "../redux/actions/setPatientGender";
+import { setProg } from "../redux/actions/setProg";
+export const Page3 = () => {
+    const [gender, setGender] = useState(useSelector(store => store.patient.gender));
     const [genderError, setGenderError] = useState("");
+    const dispatch = useDispatch();
     const handleNext = () => {
-        if (gender.length == 0) {
+        if (gender.length === 0) {
             setGenderError("Make a selection")
             return;
         }
-        setPatientGender(gender);
-        setPage(4);
-        setProg(3);
+        dispatch(setPatientGender(gender));
+        dispatch(setPage(4));
+        dispatch(setProg(3));
     }
     const onSelectGender = (text) => {
         setGender(text);
         setGenderError("");
     }
     const handleBack = () => {
-        setPage(2);
-        setProg(1);
+        dispatch(setPage(2));
+        dispatch(setProg(1));
     }
     return (
         <VStack width="90%" mx="3" mt="45%" maxW="300px">
